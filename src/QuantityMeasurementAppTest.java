@@ -29,7 +29,6 @@ public class QuantityMeasurementAppTest {
 
         assertFalse(f1.equals(null), "Feet object should not be equal to null");
     }
-
     @Test
     public void testFeetEquality_DifferentClass() {
         Feet f1 = new Feet(1.0);
