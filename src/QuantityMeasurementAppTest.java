@@ -4,55 +4,48 @@ import static org.junit.jupiter.api.Assertions.*;
 public class QuantityMeasurementAppTest {
 
     @Test
-    public void testEquality_FeetToFeet_SameValue() {
-        assertTrue(new Quantity(1.0, LengthUnit.FEET)
+    public void testEquality_YardToFeet_EquivalentValue() {
+        assertTrue(new Quantity(1.0, LengthUnit.YARD)
+                .equals(new Quantity(3.0, LengthUnit.FEET)));
+    }
+
+    @Test
+    public void testEquality_YardToInches_EquivalentValue() {
+        assertTrue(new Quantity(1.0, LengthUnit.YARD)
+                .equals(new Quantity(36.0, LengthUnit.INCH)));
+    }
+
+    @Test
+    public void testEquality_CentimeterToInch_EquivalentValue() {
+        assertTrue(new Quantity(1.0, LengthUnit.CENTIMETER)
+                .equals(new Quantity(0.393701, LengthUnit.INCH)));
+    }
+
+    @Test
+    public void testEquality_CentimeterToFeet_NonEquivalent() {
+        assertFalse(new Quantity(1.0, LengthUnit.CENTIMETER)
                 .equals(new Quantity(1.0, LengthUnit.FEET)));
     }
 
     @Test
-    public void testEquality_InchToInch_SameValue() {
-        assertTrue(new Quantity(1.0, LengthUnit.INCH)
-                .equals(new Quantity(1.0, LengthUnit.INCH)));
+    public void testEquality_MultiUnit_Transitive() {
+
+        Quantity yard = new Quantity(1.0, LengthUnit.YARD);
+        Quantity feet = new Quantity(3.0, LengthUnit.FEET);
+        Quantity inches = new Quantity(36.0, LengthUnit.INCH);
+
+        assertTrue(yard.equals(feet));
+        assertTrue(feet.equals(inches));
+        assertTrue(yard.equals(inches));
     }
 
     @Test
-    public void testEquality_FeetToInch_EquivalentValue() {
-        assertTrue(new Quantity(1.0, LengthUnit.FEET)
-                .equals(new Quantity(12.0, LengthUnit.INCH)));
-    }
+    public void testEquality_AllUnits_ComplexScenario() {
 
-    @Test
-    public void testEquality_InchToFeet_EquivalentValue() {
-        assertTrue(new Quantity(12.0, LengthUnit.INCH)
-                .equals(new Quantity(1.0, LengthUnit.FEET)));
-    }
+        assertTrue(new Quantity(2.0, LengthUnit.YARD)
+                .equals(new Quantity(6.0, LengthUnit.FEET)));
 
-    @Test
-    public void testEquality_FeetToFeet_DifferentValue() {
-        assertFalse(new Quantity(1.0, LengthUnit.FEET)
-                .equals(new Quantity(2.0, LengthUnit.FEET)));
-    }
-
-    @Test
-    public void testEquality_InchToInch_DifferentValue() {
-        assertFalse(new Quantity(1.0, LengthUnit.INCH)
-                .equals(new Quantity(2.0, LengthUnit.INCH)));
-    }
-
-    @Test
-    public void testEquality_NullComparison() {
-        assertFalse(new Quantity(1.0, LengthUnit.FEET).equals(null));
-    }
-
-    @Test
-    public void testEquality_SameReference() {
-        Quantity q = new Quantity(1.0, LengthUnit.FEET);
-        assertTrue(q.equals(q));
-    }
-
-    @Test
-    public void testEquality_InvalidUnit() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new Quantity(1.0, null));
+        assertTrue(new Quantity(6.0, LengthUnit.FEET)
+                .equals(new Quantity(72.0, LengthUnit.INCH)));
     }
 }

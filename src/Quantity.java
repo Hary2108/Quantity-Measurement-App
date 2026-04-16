@@ -18,15 +18,11 @@ public class Quantity {
     @Override
     public boolean equals(Object obj) {
 
-        // Reflexive
         if (this == obj) return true;
-
-        // Null + Type check
         if (obj == null || getClass() != obj.getClass()) return false;
 
         Quantity other = (Quantity) obj;
 
-        // Compare after converting to common unit
         return Double.compare(this.toFeet(), other.toFeet()) == 0;
     }
 

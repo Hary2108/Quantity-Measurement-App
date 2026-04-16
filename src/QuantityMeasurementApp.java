@@ -2,16 +2,19 @@ public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
 
-        Quantity q1 = new Quantity(1.0, LengthUnit.FEET);
-        Quantity q2 = new Quantity(12.0, LengthUnit.INCH);
+        System.out.println(
+                new Quantity(1.0, LengthUnit.YARD)
+                        .equals(new Quantity(3.0, LengthUnit.FEET))
+        ); // true
 
-        System.out.println("Input: Quantity(1.0, feet) and Quantity(12.0, inch)");
-        System.out.println("Output: Equal (" + q1.equals(q2) + ")");
+        System.out.println(
+                new Quantity(1.0, LengthUnit.YARD)
+                        .equals(new Quantity(36.0, LengthUnit.INCH))
+        ); // true
 
-        Quantity q3 = new Quantity(1.0, LengthUnit.INCH);
-        Quantity q4 = new Quantity(1.0, LengthUnit.INCH);
-
-        System.out.println("Input: Quantity(1.0, inch) and Quantity(1.0, inch)");
-        System.out.println("Output: Equal (" + q3.equals(q4) + ")");
+        System.out.println(
+                new Quantity(1.0, LengthUnit.CENTIMETER)
+                        .equals(new Quantity(0.393701, LengthUnit.INCH))
+        ); // true
     }
 }
