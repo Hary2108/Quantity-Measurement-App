@@ -16,12 +16,10 @@ public class QuantityMeasurementAppTest {
     public void testConversion_YardToInch() {
         assertEquals(36.0, Quantity.convert(1.0, LengthUnit.YARD, LengthUnit.INCH), 0.0001);
     }
-
     @Test
     public void testConversion_CentimeterToInch() {
         assertEquals(1.0, Quantity.convert(2.54, LengthUnit.CENTIMETER, LengthUnit.INCH), 0.0001);
     }
-
     @Test
     public void testConversion_Zero() {
         assertEquals(0.0, Quantity.convert(0.0, LengthUnit.FEET, LengthUnit.INCH), 0.0001);
