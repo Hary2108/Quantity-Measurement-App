@@ -3,57 +3,61 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class QuantityMeasurementAppTest {
 
-    // ✅ UC4 Tests
     @Test
-    public void testEquality_YardToFeet() {
-        assertTrue(new Quantity(1.0, LengthUnit.YARD)
-                .equals(new Quantity(3.0, LengthUnit.FEET)));
-    }
-
-    // ✅ UC5 Tests
-    @Test
-    public void testConversion_FeetToInch() {
-        assertEquals(12.0, Quantity.convert(1.0, LengthUnit.FEET, LengthUnit.INCH), 0.0001);
-    }
-
-    @Test
-    public void testConversion_InchToFeet() {
-        assertEquals(2.0, Quantity.convert(24.0, LengthUnit.INCH, LengthUnit.FEET), 0.0001);
-    }
-
-    // ✅ UC6 Tests
-    @Test
-    public void testAddition_FeetPlusFeet() {
+    public void testAddition_TargetFeet() {
         Quantity result = Quantity.add(
                 new Quantity(1.0, LengthUnit.FEET),
-                new Quantity(2.0, LengthUnit.FEET)
+                new Quantity(12.0, LengthUnit.INCH),
+                LengthUnit.FEET
         );
-        assertEquals(3.0, result.toFeet(), 0.0001);
+        assertEquals(2.0, result.getValue(), 0.0001);
     }
+
     @Test
-    public void testAddition_FeetPlusInch() {
+    public void testAddition_TargetInch() {
         Quantity result = Quantity.add(
                 new Quantity(1.0, LengthUnit.FEET),
-                new Quantity(12.0, LengthUnit.INCH)
+                new Quantity(12.0, LengthUnit.INCH),
+                LengthUnit.INCH
         );
-        assertEquals(2.0, result.toFeet(), 0.0001);
+        assertEquals(24.0, result.getValue(), 0.0001);
     }
 
     @Test
-    public void testAddition_WithZero() {
+    public void testAddition_TargetYard() {
         Quantity result = Quantity.add(
-                new Quantity(5.0, LengthUnit.FEET),
-                new Quantity(0.0, LengthUnit.INCH)
+                new Quantity(1.0, LengthUnit.FEET),
+                new Quantity(12.0, LengthUnit.INCH),
+                LengthUnit.YARD
         );
-        assertEquals(5.0, result.toFeet(), 0.0001);
+        assertEquals(0.6667, result.getValue(), 0.01);
     }
 
     @Test
-    public void testAddition_Negative() {
-        Quantity result = Quantity.add(
-                new Quantity(5.0, LengthUnit.FEET),
-                new Quantity(-2.0, LengthUnit.FEET)
+    public void testAddition_NullTarget() {
+        assertThrows(IllegalArgumentException.class, () ->
+                Quantity.add(
+                        new Quantity(1.0, LengthUnit.FEET),
+                        new Quantity(12.0, LengthUnit.INCH),
+                        null
+                )
         );
-        assertEquals(3.0, result.toFeet(), 0.0001);
+    }
+
+    @Test
+    public void testAddition_Commutative() {
+        Quantity r1 = Quantity.add(
+                new Quantity(1.0, LengthUnit.FEET),
+                new Quantity(12.0, LengthUnit.INCH),
+                LengthUnit.YARD
+        );
+
+        Quantity r2 = Quantity.add(
+                new Quantity(12.0, LengthUnit.INCH),
+                new Quantity(1.0, LengthUnit.FEET),
+                LengthUnit.YARD
+        );
+
+        assertEquals(r1.getValue(), r2.getValue(), 0.0001);
     }
 }

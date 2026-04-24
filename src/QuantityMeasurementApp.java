@@ -2,18 +2,27 @@ public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
 
-        // UC4 Equality
-        System.out.println(new Quantity(1.0, LengthUnit.YARD)
-                .equals(new Quantity(3.0, LengthUnit.FEET)));
-
-        // UC5 Conversion
-        System.out.println(Quantity.convert(1.0, LengthUnit.FEET, LengthUnit.INCH));
-
-        // UC6 Addition
-        Quantity result = Quantity.add(
+        // UC7 Example
+        Quantity result1 = Quantity.add(
                 new Quantity(1.0, LengthUnit.FEET),
-                new Quantity(12.0, LengthUnit.INCH)
+                new Quantity(12.0, LengthUnit.INCH),
+                LengthUnit.FEET
         );
-        System.out.println(result); // Expected: 2.0 FEET
+
+        Quantity result2 = Quantity.add(
+                new Quantity(1.0, LengthUnit.FEET),
+                new Quantity(12.0, LengthUnit.INCH),
+                LengthUnit.INCH
+        );
+
+        Quantity result3 = Quantity.add(
+                new Quantity(1.0, LengthUnit.FEET),
+                new Quantity(12.0, LengthUnit.INCH),
+                LengthUnit.YARD
+        );
+
+        System.out.println(result1); // 2 FEET
+        System.out.println(result2); // 24 INCH
+        System.out.println(result3); // ~0.667 YARD
     }
 }
