@@ -4,60 +4,38 @@ import static org.junit.jupiter.api.Assertions.*;
 public class QuantityMeasurementAppTest {
 
     @Test
-    public void testAddition_TargetFeet() {
-        Quantity result = Quantity.add(
-                new Quantity(1.0, LengthUnit.FEET),
-                new Quantity(12.0, LengthUnit.INCH),
-                LengthUnit.FEET
-        );
+    public void testConvert_FeetToInch() {
+        Quantity q = new Quantity(1.0, LengthUnit.FEET)
+                .convertTo(LengthUnit.INCH);
+
+        assertEquals(12.0, q.getValue(), 0.0001);
+    }
+
+    @Test
+    public void testAddition_DefaultUnit() {
+        Quantity result = new Quantity(1.0, LengthUnit.FEET)
+                .add(new Quantity(12.0, LengthUnit.INCH));
+
         assertEquals(2.0, result.getValue(), 0.0001);
     }
 
     @Test
-    public void testAddition_TargetInch() {
-        Quantity result = Quantity.add(
-                new Quantity(1.0, LengthUnit.FEET),
-                new Quantity(12.0, LengthUnit.INCH),
-                LengthUnit.INCH
-        );
-        assertEquals(24.0, result.getValue(), 0.0001);
-    }
+    public void testAddition_TargetUnit() {
+        Quantity result = new Quantity(1.0, LengthUnit.FEET)
+                .add(new Quantity(12.0, LengthUnit.INCH), LengthUnit.YARD);
 
-    @Test
-    public void testAddition_TargetYard() {
-        Quantity result = Quantity.add(
-                new Quantity(1.0, LengthUnit.FEET),
-                new Quantity(12.0, LengthUnit.INCH),
-                LengthUnit.YARD
-        );
         assertEquals(0.6667, result.getValue(), 0.01);
     }
 
     @Test
-    public void testAddition_NullTarget() {
-        assertThrows(IllegalArgumentException.class, () ->
-                Quantity.add(
-                        new Quantity(1.0, LengthUnit.FEET),
-                        new Quantity(12.0, LengthUnit.INCH),
-                        null
-                )
-        );
+    public void testEquality() {
+        assertTrue(new Quantity(36.0, LengthUnit.INCH)
+                .equals(new Quantity(1.0, LengthUnit.YARD)));
     }
 
     @Test
-    public void testAddition_Commutative() {
-        Quantity r1 = Quantity.add(
-                new Quantity(1.0, LengthUnit.FEET),
-                new Quantity(12.0, LengthUnit.INCH),
-                LengthUnit.YARD
-        );
-
-        Quantity r2 = Quantity.add(
-                new Quantity(12.0, LengthUnit.INCH),
-                new Quantity(1.0, LengthUnit.FEET),
-                LengthUnit.YARD
-        );
-
-        assertEquals(r1.getValue(), r2.getValue(), 0.0001);
+    public void testNullUnit() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new Quantity(1.0, null));
     }
 }

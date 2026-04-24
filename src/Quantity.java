@@ -19,58 +19,54 @@ public class Quantity {
         return unit;
     }
 
-    public double toFeet() {
-        return unit.toFeet(value);
+    // 🔹 Convert current value to base (feet)
+    public double toBase() {
+        return unit.convertToBaseUnit(value);
     }
 
-    // 🔹 UC5
-    public static double convert(double value, LengthUnit source, LengthUnit target) {
-        if (!Double.isFinite(value)) throw new IllegalArgumentException("Invalid value");
-        if (source == null || target == null) throw new IllegalArgumentException("Units cannot be null");
+    // 🔹 UC5 Conversion
+    public Quantity convertTo(LengthUnit targetUnit) {
+        if (targetUnit == null) throw new IllegalArgumentException("Target unit cannot be null");
 
-        double inFeet = source.toFeet(value);
-        return target.fromFeet(inFeet);
+        double base = unit.convertToBaseUnit(value);
+        double converted = targetUnit.convertFromBaseUnit(base);
+
+        return new Quantity(converted, targetUnit);
     }
 
-    public Quantity convertTo(LengthUnit target) {
-        return new Quantity(convert(value, unit, target), target);
+    // 🔹 UC6 Addition (default → first unit)
+    public Quantity add(Quantity other) {
+        return add(other, this.unit);
     }
 
-    // 🔹 UC6 (default: first operand unit)
-    public static Quantity add(Quantity q1, Quantity q2) {
-        return add(q1, q2, q1.unit);
+    // 🔥 UC7 Addition (with target unit)
+    public Quantity add(Quantity other, LengthUnit targetUnit) {
+
+        if (other == null) throw new IllegalArgumentException("Quantity cannot be null");
+        if (targetUnit == null) throw new IllegalArgumentException("Target unit cannot be null");
+
+        double sumBase = this.toBase() + other.toBase();
+
+        double result = targetUnit.convertFromBaseUnit(sumBase);
+
+        return new Quantity(result, targetUnit);
     }
 
-    // 🔥 UC7 (MAIN FEATURE)
-    public static Quantity add(Quantity q1, Quantity q2, LengthUnit targetUnit) {
-
-        if (q1 == null || q2 == null) {
-            throw new IllegalArgumentException("Quantity cannot be null");
-        }
-
-        if (targetUnit == null) {
-            throw new IllegalArgumentException("Target unit cannot be null");
-        }
-
-        double sumFeet = q1.toFeet() + q2.toFeet();
-
-        double resultValue = targetUnit.fromFeet(sumFeet);
-
-        return new Quantity(resultValue, targetUnit);
-    }
-
+    // 🔹 Equality (UC4)
     @Override
     public boolean equals(Object obj) {
+
         if (this == obj) return true;
         if (!(obj instanceof Quantity)) return false;
 
         Quantity other = (Quantity) obj;
-        return Math.abs(this.toFeet() - other.toFeet()) < 1e-6;
+
+        return Math.abs(this.toBase() - other.toBase()) < 1e-6;
     }
 
     @Override
     public int hashCode() {
-        return Double.hashCode(toFeet());
+        return Double.hashCode(toBase());
     }
 
     @Override
