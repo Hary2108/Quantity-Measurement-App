@@ -2,20 +2,21 @@ public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
 
-        // Conversion
+        // 🔹 LENGTH (existing)
         System.out.println(new Quantity(1.0, LengthUnit.FEET)
-                .convertTo(LengthUnit.INCH)); // 12 INCH
+                .convertTo(LengthUnit.INCH));
 
-        // Addition (default)
-        System.out.println(new Quantity(1.0, LengthUnit.FEET)
-                .add(new Quantity(12.0, LengthUnit.INCH))); // 2 FEET
+        // 🔹 WEIGHT (NEW)
+        System.out.println(new QuantityWeight(1.0, WeightUnit.KILOGRAM)
+                .equals(new QuantityWeight(1000.0, WeightUnit.GRAM)));
 
-        // Addition with target unit (UC7)
-        System.out.println(new Quantity(1.0, LengthUnit.FEET)
-                .add(new Quantity(12.0, LengthUnit.INCH), LengthUnit.YARD)); // ~0.667 YARD
+        System.out.println(new QuantityWeight(1.0, WeightUnit.KILOGRAM)
+                .convertTo(WeightUnit.POUND));
 
-        // Equality
-        System.out.println(new Quantity(36.0, LengthUnit.INCH)
-                .equals(new Quantity(1.0, LengthUnit.YARD))); // true
+        System.out.println(new QuantityWeight(1.0, WeightUnit.KILOGRAM)
+                .add(new QuantityWeight(1000.0, WeightUnit.GRAM)));
+
+        System.out.println(new QuantityWeight(1.0, WeightUnit.KILOGRAM)
+                .add(new QuantityWeight(1000.0, WeightUnit.GRAM), WeightUnit.GRAM));
     }
 }

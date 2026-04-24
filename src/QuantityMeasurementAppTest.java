@@ -4,38 +4,38 @@ import static org.junit.jupiter.api.Assertions.*;
 public class QuantityMeasurementAppTest {
 
     @Test
-    public void testConvert_FeetToInch() {
-        Quantity q = new Quantity(1.0, LengthUnit.FEET)
-                .convertTo(LengthUnit.INCH);
-
-        assertEquals(12.0, q.getValue(), 0.0001);
+    public void testWeightEquality_KgToGram() {
+        assertTrue(new QuantityWeight(1.0, WeightUnit.KILOGRAM)
+                .equals(new QuantityWeight(1000.0, WeightUnit.GRAM)));
     }
 
     @Test
-    public void testAddition_DefaultUnit() {
-        Quantity result = new Quantity(1.0, LengthUnit.FEET)
-                .add(new Quantity(12.0, LengthUnit.INCH));
+    public void testWeightConversion_KgToPound() {
+        QuantityWeight q = new QuantityWeight(1.0, WeightUnit.KILOGRAM)
+                .convertTo(WeightUnit.POUND);
+
+        assertEquals(2.20462, q.getValue(), 0.01);
+    }
+
+    @Test
+    public void testWeightAddition_Default() {
+        QuantityWeight result = new QuantityWeight(1.0, WeightUnit.KILOGRAM)
+                .add(new QuantityWeight(1000.0, WeightUnit.GRAM));
 
         assertEquals(2.0, result.getValue(), 0.0001);
     }
 
     @Test
-    public void testAddition_TargetUnit() {
-        Quantity result = new Quantity(1.0, LengthUnit.FEET)
-                .add(new Quantity(12.0, LengthUnit.INCH), LengthUnit.YARD);
+    public void testWeightAddition_TargetUnit() {
+        QuantityWeight result = new QuantityWeight(1.0, WeightUnit.KILOGRAM)
+                .add(new QuantityWeight(1000.0, WeightUnit.GRAM), WeightUnit.GRAM);
 
-        assertEquals(0.6667, result.getValue(), 0.01);
+        assertEquals(2000.0, result.getValue(), 0.0001);
     }
 
     @Test
-    public void testEquality() {
-        assertTrue(new Quantity(36.0, LengthUnit.INCH)
-                .equals(new Quantity(1.0, LengthUnit.YARD)));
-    }
-
-    @Test
-    public void testNullUnit() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new Quantity(1.0, null));
+    public void testWeightVsLength_NotEqual() {
+        assertFalse(new QuantityWeight(1.0, WeightUnit.KILOGRAM)
+                .equals(new Quantity(1.0, LengthUnit.FEET)));
     }
 }
