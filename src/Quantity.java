@@ -21,7 +21,6 @@ public class Quantity {
     public LengthUnit getUnit() {
         return unit;
     }
-
     public double toFeet() {
         return unit.toFeet(value);
     }
