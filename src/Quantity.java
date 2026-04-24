@@ -7,36 +7,12 @@ public class Quantity {
         if (unit == null) {
             throw new IllegalArgumentException("Unit cannot be null");
         }
-        if (!Double.isFinite(value)) {
-            throw new IllegalArgumentException("Invalid value");
-        }
         this.value = value;
         this.unit = unit;
     }
 
     public double toFeet() {
         return unit.toFeet(value);
-    }
-
-    // ✅ UC5 MAIN METHOD
-    public static double convert(double value, LengthUnit source, LengthUnit target) {
-
-        if (!Double.isFinite(value)) {
-            throw new IllegalArgumentException("Invalid value");
-        }
-
-        if (source == null || target == null) {
-            throw new IllegalArgumentException("Units cannot be null");
-        }
-
-        double inFeet = source.toFeet(value);      // Step 1
-        return target.fromFeet(inFeet);            // Step 2
-    }
-
-    // ✅ OPTIONAL (for extra marks)
-    public Quantity convertTo(LengthUnit target) {
-        double convertedValue = convert(this.value, this.unit, target);
-        return new Quantity(convertedValue, target);
     }
 
     @Override
@@ -47,8 +23,7 @@ public class Quantity {
 
         Quantity other = (Quantity) obj;
 
-        // ✅ FIXED (floating precision safe)
-        return Math.abs(this.toFeet() - other.toFeet()) < 1e-6;
+        return Double.compare(this.toFeet(), other.toFeet()) == 0;
     }
 
     @Override
