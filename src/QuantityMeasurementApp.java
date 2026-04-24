@@ -14,7 +14,6 @@ public class QuantityMeasurementApp {
                 new Quantity(1.0, LengthUnit.FEET),
                 new Quantity(12.0, LengthUnit.INCH)
         );
-
         System.out.println(result); // Expected: 2.0 FEET
     }
 }

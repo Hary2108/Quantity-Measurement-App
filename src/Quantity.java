@@ -45,7 +45,6 @@ public class Quantity {
         double convertedValue = convert(this.value, this.unit, target);
         return new Quantity(convertedValue, target);
     }
-
     // ✅ UC6 Addition
     public static Quantity add(Quantity q1, Quantity q2) {
 

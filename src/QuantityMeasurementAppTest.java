@@ -30,7 +30,6 @@ public class QuantityMeasurementAppTest {
         );
         assertEquals(3.0, result.toFeet(), 0.0001);
     }
-
     @Test
     public void testAddition_FeetPlusInch() {
         Quantity result = Quantity.add(
