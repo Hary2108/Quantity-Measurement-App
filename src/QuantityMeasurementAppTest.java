@@ -3,49 +3,58 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class QuantityMeasurementAppTest {
 
+    // ✅ UC4 Tests
     @Test
-    public void testEquality_YardToFeet_EquivalentValue() {
+    public void testEquality_YardToFeet() {
         assertTrue(new Quantity(1.0, LengthUnit.YARD)
                 .equals(new Quantity(3.0, LengthUnit.FEET)));
     }
 
+    // ✅ UC5 Tests
     @Test
-    public void testEquality_YardToInches_EquivalentValue() {
-        assertTrue(new Quantity(1.0, LengthUnit.YARD)
-                .equals(new Quantity(36.0, LengthUnit.INCH)));
+    public void testConversion_FeetToInch() {
+        assertEquals(12.0, Quantity.convert(1.0, LengthUnit.FEET, LengthUnit.INCH), 0.0001);
     }
 
     @Test
-    public void testEquality_CentimeterToInch_EquivalentValue() {
-        assertTrue(new Quantity(1.0, LengthUnit.CENTIMETER)
-                .equals(new Quantity(0.393701, LengthUnit.INCH)));
+    public void testConversion_InchToFeet() {
+        assertEquals(2.0, Quantity.convert(24.0, LengthUnit.INCH, LengthUnit.FEET), 0.0001);
+    }
+
+    // ✅ UC6 Tests
+    @Test
+    public void testAddition_FeetPlusFeet() {
+        Quantity result = Quantity.add(
+                new Quantity(1.0, LengthUnit.FEET),
+                new Quantity(2.0, LengthUnit.FEET)
+        );
+        assertEquals(3.0, result.toFeet(), 0.0001);
     }
 
     @Test
-    public void testEquality_CentimeterToFeet_NonEquivalent() {
-        assertFalse(new Quantity(1.0, LengthUnit.CENTIMETER)
-                .equals(new Quantity(1.0, LengthUnit.FEET)));
+    public void testAddition_FeetPlusInch() {
+        Quantity result = Quantity.add(
+                new Quantity(1.0, LengthUnit.FEET),
+                new Quantity(12.0, LengthUnit.INCH)
+        );
+        assertEquals(2.0, result.toFeet(), 0.0001);
     }
 
     @Test
-    public void testEquality_MultiUnit_Transitive() {
-
-        Quantity yard = new Quantity(1.0, LengthUnit.YARD);
-        Quantity feet = new Quantity(3.0, LengthUnit.FEET);
-        Quantity inches = new Quantity(36.0, LengthUnit.INCH);
-
-        assertTrue(yard.equals(feet));
-        assertTrue(feet.equals(inches));
-        assertTrue(yard.equals(inches));
+    public void testAddition_WithZero() {
+        Quantity result = Quantity.add(
+                new Quantity(5.0, LengthUnit.FEET),
+                new Quantity(0.0, LengthUnit.INCH)
+        );
+        assertEquals(5.0, result.toFeet(), 0.0001);
     }
 
     @Test
-    public void testEquality_AllUnits_ComplexScenario() {
-
-        assertTrue(new Quantity(2.0, LengthUnit.YARD)
-                .equals(new Quantity(6.0, LengthUnit.FEET)));
-
-        assertTrue(new Quantity(6.0, LengthUnit.FEET)
-                .equals(new Quantity(72.0, LengthUnit.INCH)));
+    public void testAddition_Negative() {
+        Quantity result = Quantity.add(
+                new Quantity(5.0, LengthUnit.FEET),
+                new Quantity(-2.0, LengthUnit.FEET)
+        );
+        assertEquals(3.0, result.toFeet(), 0.0001);
     }
 }

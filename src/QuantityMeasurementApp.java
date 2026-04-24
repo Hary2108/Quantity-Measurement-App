@@ -2,19 +2,19 @@ public class QuantityMeasurementApp {
 
     public static void main(String[] args) {
 
-        System.out.println(
-                new Quantity(1.0, LengthUnit.YARD)
-                        .equals(new Quantity(3.0, LengthUnit.FEET))
-        ); // true
+        // UC4 Equality
+        System.out.println(new Quantity(1.0, LengthUnit.YARD)
+                .equals(new Quantity(3.0, LengthUnit.FEET)));
 
-        System.out.println(
-                new Quantity(1.0, LengthUnit.YARD)
-                        .equals(new Quantity(36.0, LengthUnit.INCH))
-        ); // true
+        // UC5 Conversion
+        System.out.println(Quantity.convert(1.0, LengthUnit.FEET, LengthUnit.INCH));
 
-        System.out.println(
-                new Quantity(1.0, LengthUnit.CENTIMETER)
-                        .equals(new Quantity(0.393701, LengthUnit.INCH))
-        ); // true
+        // UC6 Addition
+        Quantity result = Quantity.add(
+                new Quantity(1.0, LengthUnit.FEET),
+                new Quantity(12.0, LengthUnit.INCH)
+        );
+
+        System.out.println(result); // Expected: 2.0 FEET
     }
 }
